@@ -17,6 +17,8 @@ public class ProductsController {
 	List<Products> product = new ArrayList<>( List.of( new Products(1,"samsung flip7",2,1299.00),
 														new Products(2,"google buds2 pro",1,599.00)));
 	
+	
+	
 	@GetMapping("/products")
 	public List<Products> getAll()
 	{
