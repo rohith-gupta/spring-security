@@ -3,6 +3,10 @@ package com.learning.spring_security.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.learning.spring_security.entity.Products;
+import com.learning.spring_security.exceptions.ProductNotFoundException;
 
 @RestController
 public class ProductsController {
@@ -20,9 +25,11 @@ public class ProductsController {
 	
 	
 	@GetMapping("/products")
-	public List<Products> getAll()
+	public ResponseEntity<List<Products>> getAll()
 	{
-		return product;
+		List<Products> products = product;
+		
+		return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(products);
 	}
 	
 	@GetMapping("/products/{id}")
@@ -35,10 +42,16 @@ public class ProductsController {
 			{
 				return prod;
 			}
+			else
+			{
+				throw new ProductNotFoundException("product not found with id " + id);
+			}
 		}
 		return null;
 		
 	}
+	
+	
 	
 	
 	@PostMapping("/products")
